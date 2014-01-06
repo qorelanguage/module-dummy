@@ -1,14 +1,20 @@
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 2.8.3)
 
-project(Qore-dummy)
+project(qore-dummy-module)
 
-# where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/ is checked
-set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules )
 
-set(CMAKE_BUILD_TYPE Debug)
-
-SET(QORE_MIN_VERSION "0.8.0")
 FIND_PACKAGE (Qore REQUIRED)
 
-add_subdirectory(src)
+
+set(CPP_SRC src/dummy-module.cpp)
+
+set(module_name "dummy")
+
+add_library(${module_name} SHARED ${CPP_SRC} ${QPP_SOURCES})
+
+qore_binary_module(${module_name} "0.0.1")
+
+qore_dist("${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
+
+qore_config_info()
 
