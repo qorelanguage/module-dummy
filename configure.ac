@@ -141,11 +141,16 @@ if test "$enable_64bit" = "yes"; then
       *linux*)	if test "$GXX" = "yes"; then
 		   CXXFLAGS="$CXXFLAGS -m64"
 		fi
-		# only set LIBSUFFIX=64 if /usr/lib64 exists
-		if test -d /usr/lib64; then
-		   LIBSUFFIX=64
-                fi
-		AC_SUBST(LIBSUFFIX)
+		if test "$LIBSUFFIX_SET" != "yes"; then
+		  if test -d /usr/lib64; then
+		     LIBSUFFIX=64
+                  fi
+		  target="${host_cpu}-${host_os}"
+		  if test -d /usr/lib/$target; then
+		     LIBSUFFIX=/$target
+                  fi
+		  AC_SUBST(LIBSUFFIX)
+		fi
 		;;
       *hpux*)	if test "$host_cpu" = "ia64"; then
                     if test -n "`echo $CXX|grep aCC`"; then
